@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>GeoTodo</title>
+
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="manifest" href="manifest.json" />
+    <link rel="icon" href="icons/icon-192.png" />
+</head>
+<body>
+<!-- HEADER -->
+<header class="app-header shadow-sm">
+    <div class="logo">📍 GeoTodo</div>
+    <div class="auth-area">
+        <button id="loginBtn" class="btn small">Sign In</button>
+        <img id="userAvatar" class="avatar hidden" alt="User avatar" />
+        <button id="logoutBtn" class="btn small secondary hidden">Logout</button>
+    </div>
+</header>
+
+<!-- TABS -->
+<nav class="tab-bar">
+    <button class="tab active" data-screen="home">Todos</button>
+    <button class="tab" data-screen="places">Places</button>
+    <button class="tab" data-screen="settings">Settings</button>
+</nav>
+
+<!-- MAIN -->
+<main id="main">
+    <!-- NEARBY BANNER -->
+    <div id="nearbyBanner" class="banner hidden">
+        <span id="nearbyText"></span>
+        <button id="nearbyViewBtn" class="btn pill small">View</button>
+    </div>
+
+    <!-- HOME SCREEN -->
+    <section id="home" class="screen active">
+        <div class="filter-scroll">
+            <button class="chip filter active" data-filter="today">Today</button>
+            <button class="chip filter" data-filter="this_week">This Week</button>
+            <button class="chip filter" data-filter="this_month">This Month</button>
+            <button class="chip filter" data-filter="nearby">Nearby</button>
+            <button class="chip filter" data-filter="all">All</button>
+        </div>
+
+        <div id="todoList" class="list-container"></div>
+
+        <button id="addTodoBtn" class="fab">＋</button>
+    </section>
+
+    <!-- ADD TODO SCREEN -->
+    <section id="addTodo" class="screen">
+        <h2>Add Todo</h2>
+        <div class="form-card">
+            <label>Title
+                <input id="todoTitle" type="text" placeholder="Buy milk and eggs" />
+            </label>
+
+            <label>Description
+                <textarea id="todoDesc" placeholder="Optional notes..."></textarea>
+            </label>
+
+            <label>Action
+                <select id="todoAction">
+                    <option value="do">Do</option>
+                    <option value="add">Add</option>
+                    <option value="buy" selected>Buy</option>
+                    <option value="bring">Bring</option>
+                </select>
+            </label>
+
+            <label>Date Bucket
+                <select id="todoDate">
+                    <option value="today">Today</option>
+                    <option value="tomorrow">Tomorrow</option>
+                    <option value="soon">Soon</option>
+                    <option value="this_week" selected>This Week</option>
+                    <option value="this_month">This Month</option>
+                    <option value="eventually">Eventually</option>
+                </select>
+            </label>
+
+            <label>Priority
+                <input id="todoPriority" type="range" min="1" max="5" value="3" />
+                <span id="priorityValue" class="range-value">3</span>
+            </label>
+
+            <label>Tags
+                <input id="todoTags" type="text" placeholder="groceries, errands" />
+            </label>
+
+            <label>Place
+                <select id="todoPlaceSelect"></select>
+            </label>
+
+            <div class="button-row">
+                <button id="saveTodoBtn" class="btn primary full">Save</button>
+                <button id="cancelTodoBtn" class="btn secondary full">Cancel</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- PLACES SCREEN -->
+    <section id="places" class="screen">
+        <h2>My Places</h2>
+
+        <button id="useCurrentLocationBtn" class="btn pill full secondary">
+            Use Current Location
+        </button>
+
+        <div id="placeList" class="list-container"></div>
+
+        <button id="addPlaceBtn" class="fab">＋</button>
+    </section>
+
+    <!-- ADD PLACE SCREEN -->
+    <section id="addPlace" class="screen">
+        <h2>Add Place</h2>
+        <div class="form-card">
+            <label>Name
+                <input id="placeName" type="text" placeholder="Costco San Jose" />
+            </label>
+
+            <label>Address
+                <input id="placeAddress" type="text" placeholder="Optional address" />
+            </label>
+
+            <label>Latitude
+                <input id="placeLat" type="number" step="0.000001" />
+            </label>
+
+            <label>Longitude
+                <input id="placeLng" type="number" step="0.000001" />
+            </label>
+
+            <label>Radius (meters)
+                <input id="placeRadius" type="number" value="300" />
+            </label>
+
+            <div class="button-row">
+                <button id="savePlaceBtn" class="btn primary full">Save</button>
+                <button id="cancelPlaceBtn" class="btn secondary full">Cancel</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- SETTINGS SCREEN -->
+    <section id="settings" class="screen">
+        <h2>Settings</h2>
+
+        <div class="card">
+            <p><strong>Email:</strong> <span id="userEmail">Not logged in</span></p>
+        </div>
+
+        <div class="card">
+            <h3>Permissions</h3>
+            <p>Location: <span id="permLocation">Unknown</span></p>
+            <p>Notifications: <span id="permNotifications">Unknown</span></p>
+        </div>
+    </section>
+</main>
+
+<script type="module" src="app.js"></script>
+
+<script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("service-worker.js");
+      });
+    }
+</script>
+</body>
+</html>
